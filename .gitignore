@@ -1,0 +1,55 @@
+# Игнорируем файлы Visual Studio
+.vscode/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Игнорируем кэш сборки и временные файлы
+ipch/
+*.obj
+*.pch
+*.idb
+*.pdb
+*.ilk
+*.tlog
+*.log
+*.lastbuildstate
+
+# Игнорируем каталоги сборки (Debug и Release)
+Debug/
+Release/
+x64/
+x86/
+bin/
+build/
+out/
+
+# Игнорируем файлы CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+CMakeLists.txt.user
+cmake_install.cmake
+
+# Игнорируем временные файлы и логи
+*.tmp
+*.log
+*.dmp
+*.db
+
+# Игнорируем исполняемые файлы
+*.exe
+*.dll
+*.lib
+*.exp
+*.o
+
+# Игнорируем файлы сборки Visual Studio
+*.vcxproj.user
+*.vcxproj.filters
+*.VC.db
+
+# Игнорируем настройки среды разработки
+*.vs/
