@@ -127,7 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="colloquium.cpp" />
+    <ClCompile Include="Fibonacci.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Palindrome.cpp" />
+    <ClCompile Include="TestFibonacci.cpp" />
+    <ClCompile Include="TestLinkedList.cpp" />
+    <ClCompile Include="TestPalidrome.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
