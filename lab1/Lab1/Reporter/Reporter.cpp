@@ -57,13 +57,13 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Reporter: Generating report " << reportFileName << std::endl;
 
-    outFile << "Отчет по файлу \"" << binaryFileName << "\".\n";
+    outFile << "File report \"" << binaryFileName << "\".\n";
     outFile << "------------------------------------------------------------------\n";
     outFile << std::left // Выравнивание по левому краю
         << std::setw(10) << "ID"
-        << std::setw(15) << "Имя"
-        << std::setw(10) << "Часы"
-        << std::setw(15) << "Зарплата" << std::endl;
+        << std::setw(15) << "Name"
+        << std::setw(10) << "Hours"
+        << std::setw(15) << "Salary" << std::endl;
     outFile << "------------------------------------------------------------------\n";
 
     outFile << std::fixed << std::setprecision(2); // Для денег
