@@ -51,13 +51,13 @@ void displayBinaryFile(const std::string& fileName) {
         return;
     }
     std::cout << "\n--- Contents of binary file: " << fileName << " ---\n";
-    employee emp;
+    Employee emp;
     int count = 0;
-    while (inFile.read(reinterpret_cast<char*>(&emp), sizeof(employee))) {
+    while (inFile.read(reinterpret_cast<char*>(&emp), sizeof(Employee))) {
         count++;
-        std::cout << "Record " << count << ": ID=" << emp.num
+        std::cout << "Record " << count << ": ID=" << emp.id
             << ", Name=" << emp.name
-            << ", Hours=" << std::fixed << std::setprecision(2) << emp.hours << std::endl;
+            << ", Hours=" << std::fixed << std::setprecision(2) << emp.hoursWorked << std::endl;
     }
     inFile.close();
     if (count == 0) {
