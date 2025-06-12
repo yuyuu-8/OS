@@ -1,8 +1,7 @@
 #pragma once
 
-#include <limits> // Required for std::numeric_limits for input clearing
+#include <limits> 
 
-// Maximum length for employee name (excluding null terminator)
 #define MAX_EMPLOYEE_NAME_LENGTH 9 
 
 struct Employee {

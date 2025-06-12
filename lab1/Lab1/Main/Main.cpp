@@ -2,43 +2,43 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <windows.h> // Для CreateProcess и WaitForSingleObject
-#include <iomanip>   // Для вывода
-#include "employee.h" // Для чтения и вывода бинарного файла
+#include <windows.h>
+#include <iomanip>
+#include "employee.h"
 
-// Функция для запуска процесса
+// Function to launch a process
 bool launchProcess(const std::string& commandLine) {
-    STARTUPINFOA si; // Используем ANSI-версию STARTUPINFOA
+    STARTUPINFOA si;
     PROCESS_INFORMATION pi;
 
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-    // CreateProcess требует неконстантную строку для commandLine
-    char cmdLine[512]; // Буфер для командной строки
+    // CreateProcess requires a non-const string for commandLine
+    char cmdLine[512]; // Buffer for the command line
     strncpy_s(cmdLine, commandLine.c_str(), sizeof(cmdLine) - 1);
-    cmdLine[sizeof(cmdLine) - 1] = 0; // Гарантируем нуль-терминацию
+    cmdLine[sizeof(cmdLine) - 1] = 0; // Ensure null-termination
 
-    if (!CreateProcessA(NULL,   // Имя модуля (используем командную строку)
-        cmdLine,// Командная строка
-        NULL,   // Дескриптор защиты процесса
-        NULL,   // Дескриптор защиты потока
-        FALSE,  // Наследование дескрипторов
-        0,      // Флаги создания
-        NULL,   // Родительский блок окружения
-        NULL,   // Родительская текущая директория
-        &si,    // Указатель на STARTUPINFO
-        &pi)    // Указатель на PROCESS_INFORMATION
+    if (!CreateProcessA(NULL,   // Module name (use command line)
+        cmdLine,                // Command line
+        NULL,                   // Process security descriptor
+        NULL,                   // Thread security descriptor
+        FALSE,                  // Handle inheritance
+        0,                      // Creation flags
+        NULL,                   // Parent environment block
+        NULL,                   // Parent current directory
+        &si,                    // Pointer to STARTUPINFO
+        &pi)                    // Pointer to PROCESS_INFORMATION
         ) {
         std::cerr << "CreateProcess failed (" << GetLastError() << "). Command: " << commandLine << std::endl;
         return false;
     }
 
-    // Ждем завершения дочернего процесса
+    // Wait for the child process to finish
     WaitForSingleObject(pi.hProcess, INFINITE);
 
-    // Закрываем дескрипторы процесса и потока
+    // Close process and thread handles
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return true;
@@ -87,13 +87,13 @@ int main() {
     int numRecords;
     double hourlyRate;
 
-    // 1. Запрашиваем с консоли имя бинарного файла и количество записей
+    // 1. Ask for the binary file name and number of records from the console
     std::cout << "Enter binary file name: ";
     std::cin >> binaryFileName;
     std::cout << "Enter number of records: ";
     std::cin >> numRecords;
 
-    // 2. Запускаем утилиту Creator
+    // 2. Launch the Creator utility
     std::string creatorCmd = "Creator.exe " + binaryFileName + " " + std::to_string(numRecords);
     std::cout << "Launching Creator: " << creatorCmd << std::endl;
     if (!launchProcess(creatorCmd)) {
@@ -102,18 +102,18 @@ int main() {
     }
     std::cout << "Creator finished.\n";
 
-    // 3. Ждем завершения (сделано в launchProcess)
+    // 3. Wait for it to finish
 
-    // 4. Выводим содержимое созданного бинарного файла на консоль
+    // 4. Display the contents of the created binary file to the console
     displayBinaryFile(binaryFileName);
 
-    // 5. Запрашиваем с консоли имя файла отчета и оплату за час работы
+    // 5. Ask for the report file name and hourly wage from the console
     std::cout << "Enter report file name: ";
     std::cin >> reportFileName;
     std::cout << "Enter hourly rate: ";
     std::cin >> hourlyRate;
 
-    // 6. Запускаем утилиту Reporter
+    // 6. Launch the Reporter utility
     std::string reporterCmd = "Reporter.exe " + binaryFileName + " " + reportFileName + " " + std::to_string(hourlyRate);
     std::cout << "Launching Reporter: " << reporterCmd << std::endl;
     if (!launchProcess(reporterCmd)) {
@@ -122,12 +122,12 @@ int main() {
     }
     std::cout << "Reporter finished.\n";
 
-    // 7. Ждем завершения (сделано в launchProcess)
+    // 7. Wait for it to finish
 
-    // 8. Выводим отчет на консоль
+    // 8. Display the report to the console
     displayTextFile(reportFileName);
 
-    // 9. Завершаем свою работу
+    // 9. End the main program
     std::cout << "Main program finished.\n";
     return 0;
 }

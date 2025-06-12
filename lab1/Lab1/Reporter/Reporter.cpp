@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <algorithm> // For std::sort
-#include <iomanip>   // For std::setw, std::fixed, std::setprecision
-#include <stdexcept> // For std::invalid_argument, std::runtime_error
+#include <algorithm>
+#include <iomanip>
+#include <stdexcept>
 #include "employee.h"
 
 // Comparison function for sorting Employees by ID
@@ -50,11 +50,9 @@ int main(int argc, char* argv[]) {
     std::vector<Employee> employees;
     Employee empBuffer;
     try {
-        // C++ style cast: reinterpret_cast for reading raw bytes
         while (inFile.read(reinterpret_cast<char*>(&empBuffer), sizeof(Employee))) {
             employees.push_back(empBuffer);
         }
-        // Check for read errors that didn't necessarily stop the loop but set fail bits (e.g. partial read at EOF)
         if (inFile.fail() && !inFile.eof()) {
             throw std::runtime_error("Error reading from binary file. File might be corrupted or format is incorrect.");
         }
@@ -68,13 +66,12 @@ int main(int argc, char* argv[]) {
 
     if (employees.empty()) {
         std::cout << "Reporter: No data found in '" << binaryInputFileName << "' or file is empty." << std::endl;
-        // Optionally create an empty report or just exit
     }
     else {
         std::cout << "Reporter: Read " << employees.size() << " records from '" << binaryInputFileName << "'." << std::endl;
     }
 
-    // 3. Sort employees (e.g., by ID)
+    // 3. Sort employees (by ID)
     std::sort(employees.begin(), employees.end(), compareEmployeesById);
 
     // 4. Open report file for writing
@@ -82,7 +79,7 @@ int main(int argc, char* argv[]) {
     std::ofstream outFile(reportOutputFileName, std::ios::out | std::ios::trunc);
     if (!outFile.is_open()) {
         std::cerr << "Error: Could not open report file '" << reportOutputFileName << "' for writing." << std::endl;
-        return 3; // Re-using error code 3 for file opening issues
+        return 3;
     }
 
     std::cout << "Reporter: Generating report '" << reportOutputFileName << "'..." << std::endl;
@@ -109,17 +106,17 @@ int main(int argc, char* argv[]) {
             << std::setw(15) << salary << std::endl;
         if (outFile.fail()) {
             std::cerr << "Error: Failed to write to report file. Disk full or other I/O error?" << std::endl;
-            outFile.close(); // Attempt to close
-            return 4; // IO error
+            outFile.close();
+            return 4;
         }
     }
     outFile << "------------------------------------------------------------------\n";
 
     outFile.close();
-    if (outFile.fail()) { // Check error on close
+    if (outFile.fail()) {
         std::cerr << "Error: Failed to finalize report file. Disk full or other I/O error?" << std::endl;
         return 4;
     }
     std::cout << "Reporter: Report file '" << reportOutputFileName << "' generated successfully." << std::endl;
-    return 0; // Success
+    return 0;
 }
