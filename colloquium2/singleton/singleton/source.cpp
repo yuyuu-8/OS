@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <cstdlib>
 
-// Стратегии создания
+// РЎС‚СЂР°С‚РµРіРёРё СЃРѕР·РґР°РЅРёСЏ
 template <typename T>
 struct DefaultCreation {
     static T* Create() {
@@ -28,7 +28,7 @@ struct CreateWithArgs {
     }
 };
 
-// Шаблонные стратегии времени жизни
+// РЁР°Р±Р»РѕРЅРЅС‹Рµ СЃС‚СЂР°С‚РµРіРёРё РІСЂРµРјРµРЅРё Р¶РёР·РЅРё
 template <typename T>
 class DefaultLifetime {
 public:
@@ -49,11 +49,11 @@ public:
     }
 
     static void OnDeadReference() {
-        // Разрешаем "восстановление" объекта
+        // Р Р°Р·СЂРµС€Р°РµРј "РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ" РѕР±СЉРµРєС‚Р°
     }
 };
 
-// Шаблонные стратегии потокобезопасности
+// РЁР°Р±Р»РѕРЅРЅС‹Рµ СЃС‚СЂР°С‚РµРіРёРё РїРѕС‚РѕРєРѕР±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё
 template <typename T>
 class SingleThreaded {
 public:
@@ -71,7 +71,7 @@ public:
     static inline Mutex mtx_;
 };
 
-// Ядро SingletonHolder
+// РЇРґСЂРѕ SingletonHolder
 template <
     typename T,
     template <typename> class CreationPolicy = DefaultCreation,
@@ -120,7 +120,7 @@ private:
     SingletonHolder& operator=(const SingletonHolder&) = delete;
 };
 
-// Пример использования
+// РџСЂРёРјРµСЂ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
 class DatabaseConnection {
 public:
     DatabaseConnection() { std::cout << "DB Connected\n"; }
@@ -131,7 +131,7 @@ public:
     }
 };
 
-// Конфигурация Singleton
+// РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ Singleton
 using DBSingleton = SingletonHolder<
     DatabaseConnection,
     DefaultCreation,
@@ -146,9 +146,9 @@ int main() {
     auto& db2 = DBSingleton::Instance();
     std::cout << "Same instance: " << (&db1 == &db2) << "\n";
 
-    // Тестирование "феникса"
-    DBSingleton::Instance().~DatabaseConnection(); // Имитация деструкции
-    auto& db3 = DBSingleton::Instance();     // Должен восстановиться
+    // РўРµСЃС‚РёСЂРѕРІР°РЅРёРµ "С„РµРЅРёРєСЃР°"
+    DBSingleton::Instance().~DatabaseConnection(); // РРјРёС‚Р°С†РёСЏ РґРµСЃС‚СЂСѓРєС†РёРё
+    auto& db3 = DBSingleton::Instance();     // Р”РѕР»Р¶РµРЅ РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊСЃСЏ
     db3.query("SELECT * FROM logs");
 
     return 0;
